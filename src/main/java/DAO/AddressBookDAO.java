@@ -42,13 +42,13 @@ public class AddressBookDAO extends AddressBookInterface {
 
                /*Purpose : Using Java Streams to search for duplicate contacts.
                           If duplicate contact exist, then do not insert the contact details.
-                Dated : 03.07.2021
+                Dated : 08.07.2021
                */
 
                 List<String> names = value.stream().map(PersonInfo::getFirst_name).collect(Collectors.toList());
 
-                for ( int k = 0; k < names.size(); k++)  {
-                    if(names.get(j).equals(p.getFirst_name())) {
+                for (int k = 0; k < names.size(); k++) {
+                    if (names.get(j).equals(p.getFirst_name())) {
                         found = true;
                         break;
                     }
@@ -60,8 +60,7 @@ public class AddressBookDAO extends AddressBookInterface {
                 value.add(p);
                 personInfoDict.put(addressBookName, value);
             }
-        }
-        else {
+        } else {
             pList = new ArrayList<>();
             pList.add(p);
             personInfoDict.put(addressBookName, pList);
@@ -73,8 +72,9 @@ public class AddressBookDAO extends AddressBookInterface {
     @Override
     public void updateContact(String addressBookName, Hashtable<String, ArrayList<PersonInfo>> personInfoDict) {
         boolean flag = findContact(addressBookName, personInfoDict);
-        if (flag == true) editContactDetails(addressBookName, personInfoDict);
-        else {
+        if (flag == true) {
+            editContactDetails(addressBookName, personInfoDict);
+        } else {
             System.out.println("\nNo such Address Book found to update!\n");
         }
     }
@@ -95,7 +95,7 @@ public class AddressBookDAO extends AddressBookInterface {
 
         ArrayList<PersonInfo> value = personInfoDict.get(addressBookName);
         for (int j = 0; j < value.size(); j++) {
-            if(value.get(j).getFirst_name().equals(fName)) {
+            if (value.get(j).getFirst_name().equals(fName)) {
                 System.out.println("Choose your edit option: ");
                 System.out.println("1. Last Name");
                 System.out.println("2. Address");
@@ -138,8 +138,7 @@ public class AddressBookDAO extends AddressBookInterface {
                 }
                 System.out.println("\nUpdated successfully!\n");
                 break;
-            }
-            else
+            } else
                 System.out.println("\nNo First Name Found!\n");
         }
     }
@@ -155,39 +154,36 @@ public class AddressBookDAO extends AddressBookInterface {
 
             ArrayList<PersonInfo> value = personInfoDict.get(addressBookName);
             for (int j = 0; j < value.size(); j++) {
-                if(value.get(j).getFirst_name().equals(fName)) {
+                if (value.get(j).getFirst_name().equals(fName)) {
                     value.remove(j);
                     found = true;
                     break;
                 }
             }
-            if( found == true) {
+            if (found == true) {
                 System.out.println("\nContact in Address Book Deleted.\n");
-            }
-            else
+            } else
                 System.out.println("\nNo such First Name found in the Address Book.\n");
-        }
-        else
+        } else
             System.out.println("\nNo contacts found in the Address Book.\n");
     }
 
     @Override
     public void displayCompanyContacts(Hashtable<String, ArrayList<PersonInfo>> personInfoDict) {
         personInfoDict.keySet().forEach(entry -> {
-            System.out.println(entry + "->" + personInfoDict.get(entry)+ "\n");
+            System.out.println(entry + "->" + personInfoDict.get(entry) + "\n");
         });
     }
 
     /*Purpose : Using Java Streams to search for Person in a City or State across the multiple AddressBook.
                 Maintain Dictionary of City and Person as well as State and Person
-                Finally get the count of Persons by City or State
-      Dated : 07.07.2021
+                Finally view Persons by City or State
+      Dated : 08.07.2021
     */
 
     @Override
     public void searchPerson() {
         Hashtable<String, Hashtable<String, ArrayList<String>>> hSearch = new Hashtable<>();
-        AtomicInteger count = new AtomicInteger();
 
         System.out.println("Press 1 to search person by city");
         System.out.println("Press 2 to search person by state");
@@ -203,14 +199,13 @@ public class AddressBookDAO extends AddressBookInterface {
                     List<String> city = value.stream().map(PersonInfo::getCity).collect(Collectors.toList());
                     Hashtable<String, ArrayList<String>> person = new Hashtable<>();
                     ArrayList<String> firstName = new ArrayList<>();
-                    for ( int k = 0; k < city.size(); k++)  {
+                    for (int k = 0; k < city.size(); k++) {
                         if (city.get(k).equals(cityName)) {
                             firstName.add(value.get(k).getFirst_name());
-                            count.getAndIncrement();
                         }
-                        person.put(cityName , firstName);
+                        person.put(cityName, firstName);
                     }
-                    hSearch.put(entry , person);
+                    hSearch.put(entry, person);
                 });
 
                 break;
@@ -223,19 +218,17 @@ public class AddressBookDAO extends AddressBookInterface {
                     List<String> city = value.stream().map(PersonInfo::getState).collect(Collectors.toList());
                     Hashtable<String, ArrayList<String>> person = new Hashtable<>();
                     ArrayList<String> firstName = new ArrayList<>();
-                    for ( int k = 0; k < city.size(); k++)  {
+                    for (int k = 0; k < city.size(); k++) {
                         if (city.get(k).equals(stateName)) {
                             firstName.add(value.get(k).getFirst_name());
-                            count.getAndIncrement();
                         }
-                        person.put(stateName , firstName);
+                        person.put(stateName, firstName);
                     }
-                    hSearch.put(entry , person);
+                    hSearch.put(entry, person);
                 });
 
                 break;
         }
-        System.out.println("\nViewing Persons by City or State\n" +hSearch);
-        System.out.println("\nNumber of contact persons i.e. count by City or State is : " +count +"\n");
+        System.out.println(hSearch);
     }
 }

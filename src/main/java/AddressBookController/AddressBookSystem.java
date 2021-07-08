@@ -1,10 +1,4 @@
-package AddressBookController;
-import AddressBookModel.PersonInfo;
-import AddressBookService.AddressBook;
-import Util.UserInputOutput;
-
-import java.util.*;
- /**
+/**
  * Refactor to add multiple Address Book to the System.
  * Each Address Book has a unique Name
  * Use Console to add new Address Book
@@ -12,6 +6,12 @@ import java.util.*;
  * @author: ANIKET RAIKWAR
  * @since: 07.07.2021
  */
+package AddressBookController;
+import AddressBookModel.PersonInfo;
+import AddressBookService.AddressBook;
+import Util.UserInputOutput;
+
+import java.util.*;
 
 public class AddressBookSystem {
     private static final int ADD = 1;
