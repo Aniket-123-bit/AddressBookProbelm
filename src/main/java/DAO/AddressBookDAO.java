@@ -12,6 +12,11 @@ public class AddressBookDAO extends AddressBookInterface {
     PersonInfo p = null;
     ArrayList<PersonInfo> pList = new ArrayList<>();
 
+     /*Purpose : Using Java Streams to search for duplicate contacts.
+                          If duplicate contact exist, then do not insert the contact details.
+       @since : 07.07.2021
+     */
+
     @Override
     public Hashtable<String, ArrayList<PersonInfo>> insertContactDetails() {
         boolean found = false;
@@ -175,7 +180,7 @@ public class AddressBookDAO extends AddressBookInterface {
 
     /*Purpose : Using Java Streams to search for Person in a City or State across the multiple AddressBook.
                 Maintain Dictionary of City and Person as well as State and Person
-                Finally get the count of Persons by City or State
+                Finally get the count of Persons by City or State using java streams
       @since : 07.07.2021
     */
 
@@ -201,10 +206,10 @@ public class AddressBookDAO extends AddressBookInterface {
                     for ( int k = 0; k < city.size(); k++)  {
                         if (city.get(k).equals(cityName)) {
                             firstName.add(value.get(k).getFirst_name());
-                            count.getAndIncrement();
                         }
                         person.put(cityName , firstName);
                     }
+                    count.addAndGet((int)firstName.stream().count());
                     hSearch.put(entry , person);
                 });
 
@@ -221,10 +226,10 @@ public class AddressBookDAO extends AddressBookInterface {
                     for ( int k = 0; k < city.size(); k++)  {
                         if (city.get(k).equals(stateName)) {
                             firstName.add(value.get(k).getFirst_name());
-                            count.getAndIncrement();
                         }
                         person.put(stateName , firstName);
                     }
+                    count.addAndGet((int)firstName.stream().count());
                     hSearch.put(entry , person);
                 });
 
@@ -234,16 +239,47 @@ public class AddressBookDAO extends AddressBookInterface {
         System.out.println("\nNumber of contact persons i.e. count by City or State is : " +count +"\n");
     }
 
-    /**
-     * Purpose : Sort entries in the Address Book based on First Name aphabetically
-     *
-     * @since : 08.07.2021
+    /*Purpose : Sort entries in the Address Book based on First Name aphabetically
+                Sort entries in the Address Book based on City, State, or Zip
+      @since : 08.07.2021
      */
 
     public void sortPerson() {
-        personInfoDict.keySet().forEach(entry -> {
-            List<PersonInfo> data = personInfoDict.get(entry).stream().sorted(Comparator.comparing(PersonInfo::getFirst_name)).collect(Collectors.toList());
-            System.out.println(data);
-        });
+        System.out.println("Press 1 to sort person by First Name");
+        System.out.println("Press 2 to sort person by City");
+        System.out.println("Press 3 to sort person by State");
+        System.out.println("Press 4 to sort person by Zip");
+        int choice = input.nextInt();
+
+        switch(choice) {
+            case 1:
+                System.out.println("\nSorting Address Book based on First Name");
+                personInfoDict.keySet().forEach(entry -> {
+                    List<PersonInfo> data = personInfoDict.get(entry).stream().sorted(Comparator.comparing(PersonInfo::getFirst_name)).collect(Collectors.toList());
+                    System.out.println(data);
+                });
+                break;
+            case 2:
+                System.out.println("\nSorting Address Book based on City");
+                personInfoDict.keySet().forEach(entry -> {
+                    List<PersonInfo> data = personInfoDict.get(entry).stream().sorted(Comparator.comparing(PersonInfo::getCity)).collect(Collectors.toList());
+                    System.out.println(data);
+                });
+                break;
+            case 3:
+                System.out.println("\nSorting Address Book based on State");
+                personInfoDict.keySet().forEach(entry -> {
+                    List<PersonInfo> data = personInfoDict.get(entry).stream().sorted(Comparator.comparing(PersonInfo::getState)).collect(Collectors.toList());
+                    System.out.println(data);
+                });
+                break;
+            case 4:
+                System.out.println("\nSorting Address Book based on Zip");
+                personInfoDict.keySet().forEach(entry -> {
+                    List<PersonInfo> data = personInfoDict.get(entry).stream().sorted(Comparator.comparing(PersonInfo::getZip)).collect(Collectors.toList());
+                    System.out.println(data);
+                });
+                break;
+        }
     }
 }
