@@ -1,9 +1,10 @@
 package AddressBookService;
+
 import AddressBookModel.PersonInfo;
 import DAO.AddressBookDAO;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class AddressBook extends AddressBookInterface {
     AddressBookDAO addressBookDAO = new AddressBookDAO();
@@ -40,5 +41,10 @@ public class AddressBook extends AddressBookInterface {
     @Override
     public void searchPerson() {
         addressBookDAO.searchPerson();
+    }
+
+    @Override
+    public void sortPerson() {
+        addressBookDAO.sortPerson();
     }
 }

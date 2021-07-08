@@ -19,4 +19,5 @@ public abstract class AddressBookInterface {
     public abstract void displayCompanyContacts(Hashtable<String, ArrayList<PersonInfo>> personInfoDict);
 
     public abstract void searchPerson();
+    public abstract void sortPerson();
 }
