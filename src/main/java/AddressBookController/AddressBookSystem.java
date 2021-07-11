@@ -1,23 +1,26 @@
-package AddressBookController; /**
- * Refactor to add multiple Address Book to the System.
- * Each Address Book has a unique Name
- * Use Console to add new Address Book
- * Maintain Dictionary of Address Book Name to Address Book
- * Avoid Duplicate Entries of First Name in Address Book
- * Search and View the person details based on City or State in the Address Book
- * Get the total count of person details based on a particular City or State in the Address Book
- * Sort the entries in the address book alphabetically by Person’s name, City, State or Zip
- *
- * @author: ANIKET RAIKWAR
- * @since: 07.07.2021
- */
+package AddressBookController;
+ /**
+  * Refactor to add multiple Address Book to the System.
+  * Each Address Book has a unique Name
+  * Use Console to add new Address Book
+  * Maintain Dictionary of Address Book Name to Address Book
+  * Avoid Duplicate Entries of First Name in Address Book
+  * Search and View the person details based on City or State in the Address Book
+  * Get the total count of person details based on a particular City or State in the Address Book
+  * Sort the entries in the address book alphabetically by Person’s name, City, State or Zip
+  * Read and Write Data Person Contact in a .txt File using Java File IO
+  * Read and Write Data Person Contact in a .csv File using OpenCSV Library
+  *
+  * @author: ANIKET RAIKWAR
+  * * @since: 07.07.2021
+  */
+ import AddressBookCSVOp.ReadWriteCSVFile;
+ import AddressBookIOOperations.ReadWriteOperations;
+ import AddressBookModel.PersonInfo;
+ import AddressBookService.AddressBook;
+ import Util.UserInputOutput;
 
-import AddressBookIOOperations.ReadWriteOperations;
-import AddressBookModel.PersonInfo;
-import AddressBookService.AddressBook;
-import Util.UserInputOutput;
-
-import java.util.*;
+ import java.util.*;
 
 
 public class AddressBookSystem {
@@ -34,6 +37,7 @@ public class AddressBookSystem {
     public static void main(String args[]){
         Hashtable<String, ArrayList<PersonInfo>> personInfoDict = new Hashtable<>();
         ReadWriteOperations readWriteObj = new ReadWriteOperations();
+        ReadWriteCSVFile csvObj = new ReadWriteCSVFile();
 
         boolean flag = true;
         int option;
@@ -44,6 +48,7 @@ public class AddressBookSystem {
                     System.out.println("\n" + "Add a new Address Book");
                     personInfoDict = add_Book.insertContactDetails();
                     readWriteObj.writeInAddressBook(personInfoDict);
+                    csvObj.writeCSVFile(personInfoDict);
                     //System.out.println(personInfoDict + "\n");
                     break;
                 case EDIT:
@@ -61,6 +66,7 @@ public class AddressBookSystem {
                     System.out.println("\n" + "Display all contacts in the Address Book");
                     //add_Book.displayCompanyContacts(personInfoDict);
                     readWriteObj.readFromAddressBook();
+                    csvObj.readCSVFile();
                     break;
                 case SEARCH_CITY:
                     System.out.println("\n" + "Search Address Book based on City or State");
